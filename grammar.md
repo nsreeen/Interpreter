@@ -1,14 +1,14 @@
 terminals:
 
-!ADD 
+!ADD
 !SUB
 !MUL
 
--> 
+->
 
 integers [0-9]+
 names ?[^ ]+
-| 
+|
 >
 
 
@@ -17,7 +17,7 @@ Rules:
 - Expressions that can be surrounded by | and >
 
 
-non terminals:
+non terminals (should have own func in parser and most have own class):
 
 PROGRAM := STMT +
 
@@ -30,6 +30,3 @@ EXPR := | EXPR operator EXPR >
 
 ASSIGNMENT :=
         NAME <- EXPR
-
-
-

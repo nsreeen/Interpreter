@@ -1,4 +1,4 @@
-import lexical, syntax, tree_stuff
+import lexical, syntax, evaluator
 
 
 """
@@ -6,17 +6,17 @@ make test and have ~10 sample strings
 
 """
 
-script = "| | 2 !ADD | 3 !ADD 1 > > !SUB | 5 !ADD 7 > >"
+#script = "| | 2 !ADD | 3 !ADD 1 > > !SUB | 5 !ADD 7 > >"
+
+script = "| ?x <- | 5 !ADD 7 > >"
 
 tokens = lexical.tokenize(script)
 
 print(tokens)
 
-tree = tree_stuff.Tree()
+program = syntax.parse_program(tokens)
 
-for token in tokens:
-    #print('token: ', token)
-    token_type = syntax.process_token(token)
-    tree = syntax.add_to_tree(tree, token_type, token)
+for statement in program.statements:
+    print(statement)
 
-tree_stuff.traverse_tree(tree.start)
+program = evaluator.traverse_graph_expressions(program)
