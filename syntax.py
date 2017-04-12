@@ -12,12 +12,11 @@ EXPR := | EXPR operator EXPR >
 
 ASSIGNMENT :=
         NAME <- EXPR"""
-
+from pprint import pprint
 
 class Program():
     def __init__(self):
         self.statements = []
-
 
 class Expression():
     def __init__(self, left=None, right=None, operator=None):
@@ -48,13 +47,13 @@ def parse_program(tokens):
             program.statements.append(statement)
             print('added statement: ', program.statements)
         else:
-            print_error("wrong syntax, missing | at parse_program")
+            print_error("no statement")
             return #should this be break???
     return program
 
 
 def parse_statement(tokens):
-    if tokens[0].type == "OPE":
+    if tokens[0].type == "OPE": ###shouldnt be here incase assign an int
         tokens.pop(0)
     else:
         print_error("wrong syntax, missing | at parse_statement")
@@ -65,7 +64,9 @@ def parse_statement(tokens):
 
 
 def parse_expression(tokens): #assume no nested for now
+    pprint(tokens)
     first = tokens.pop(0)
+    pprint(tokens)
     if first.type == "NUM":
         left = int(first.value)
     elif first.type == "VAR":
@@ -83,12 +84,14 @@ def parse_expression(tokens): #assume no nested for now
         print_error(("incorrect expression syntax (second) ", second))
         return
 
+    pprint(tokens)
     third = tokens.pop(0)
+    pprint(tokens)
     if third.type == "NUM":
-        right = int(first.value)
-    elif first.type == "VAR":
-        right = first.value
-    elif first.type == "OPE":
+        right = int(third.value)
+    elif third.type == "VAR":
+        right = third.value
+    elif third.type == "OPE":
         right = parse_expression(tokens)
     else:
         print_error(("incorrect expression syntax (third) ", third))
@@ -97,10 +100,10 @@ def parse_expression(tokens): #assume no nested for now
     if tokens[0].type == "CLO":
         tokens.pop(0)
     else:
-        print_error(("incorrect expression syntax (third) ", third))
+        print_error(("incorrect end", tokens[0]))
         return
 
-    return Expression(left, right, operator)
+    return Expression(left=left, right=right, operator=operator)
 
 """| ?x <- | 5 !ADD 7 > >"""
 

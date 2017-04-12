@@ -1,3 +1,4 @@
+import syntax
 
 def execute_calculation(left, right, op):
     if op == "!ADD":
@@ -7,15 +8,21 @@ def execute_calculation(left, right, op):
     elif op == "!MUL":
         return left * right
 
-def calculate_value_of_expression(expression):
-    if isinstance(expression.left, int) and isinstance(expression.right, int):
-        return execute_calculation(expression.left, expression.right, expression.operator)
-    elif expression.left.value and expression.right.value:
-        return execute_calculation(expression.left.value, expression.right.value, expression.operator)
+def evaluate_tree(statement):
+    print("evaluating")
+    if statement.value != None:
+        print("RESULT ===> ", statement.value)
+        #return
 
-def traverse_graph_expressions(program):
-    for statement in program.statements:
-        if statement.expression: #only expressions have operator
-            expression.value = calculate_value_of_expression(statement)
+        if isinstance(statement.left, syntax.Expression) and statement.left.value == None:
+            statement.left.value = evaluate_tree(statement.left)
 
-#why is program a nonetype object?!?!?!
+        if isinstance(statement.right, syntax.Expression) and statement.right.value == None:
+            statement.right.value = evaluate_tree(statement.right)
+
+    #if type(statement.left) == int:
+    #    statement.left.value = left
+
+        statement.value = statement.left + statement.right.value # execute_calculation(statement.left, statement.right.value, statement.operator)
+        print("RESULT ===> ", statement.value)
+    return
