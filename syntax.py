@@ -12,6 +12,7 @@ EXPR := | EXPR operator EXPR >
 
 ASSIGNMENT :=
         NAME <- EXPR"""
+
 from pprint import pprint
 
 class Program():
@@ -19,11 +20,11 @@ class Program():
         self.statements = []
 
 class Expression():
-    def __init__(self, left=None, right=None, operator=None):
+    def __init__(self, left=None, right=None, operator=None, value=None):
         self.left = left
         self.right = right
         self.operator = operator
-        self.value = None
+        self.value = value
         self.expression = True #this must not be necessary
 
 
@@ -35,7 +36,7 @@ class Assignment():
 
 
 def print_error(message):
-    print(message)
+    print("ERROR: ", message)
 
 
 def parse_program(tokens):
@@ -47,7 +48,7 @@ def parse_program(tokens):
             program.statements.append(statement)
             print('added statement: ', program.statements)
         else:
-            print_error("no statement")
+            print_error(("no statement, tokens: ", tokens))
             return #should this be break???
     return program
 
@@ -56,56 +57,46 @@ def parse_statement(tokens):
     if tokens[0].type == "OPE": ###shouldnt be here incase assign an int
         tokens.pop(0)
     else:
-        print_error("wrong syntax, missing | at parse_statement")
+        print_error("(at parse_statement) statement doesnt start with | ")
+        pprint(tokens)
         return
     if len(tokens) > 2 and tokens[0].type == "VAR" and tokens[1].type == "ASS":
         return parse_assignment(tokens)
     return parse_expression(tokens)
 
 
-def parse_expression(tokens): #assume no nested for now
-    pprint(tokens)
+def parse_expression_side(tokens):
     first = tokens.pop(0)
-    pprint(tokens)
-    if first.type == "NUM":
-        left = int(first.value)
+    if first.type == "OPE":
+        return parse_expression(tokens)
+
+    elif first.type == "NUM":
+        return int(first.value)
+
     elif first.type == "VAR":
-        left = first.value
-    elif first.type == "OPE":
-        left = parse_expression(tokens)
+        return first.value
+
     else:
-        print_error(("incorrect expression syntax (first) ", first))
-        return
+        print_error("at parse_expression_side")
 
-    second = tokens.pop(0)
-    if second.type == "OPP":
-        operator = second.value
+
+def parse_expression(tokens): #assume no nested for now
+    left = parse_expression_side(tokens)
+
+    next_token = tokens.pop(0)
+    if next_token.type == "CLO": #- it is a one token expression OR double brackets
+        value = left
+        result = Expression(value=value)
+    elif next_token.type == "OPP":
+        operator = next_token.value
+        right = parse_expression_side(tokens)
+        result = Expression(left=left, right=right, operator=operator)
     else:
-        print_error(("incorrect expression syntax (second) ", second))
-        return
+        print_error("at parse-expression")
 
-    pprint(tokens)
-    third = tokens.pop(0)
-    pprint(tokens)
-    if third.type == "NUM":
-        right = int(third.value)
-    elif third.type == "VAR":
-        right = third.value
-    elif third.type == "OPE":
-        right = parse_expression(tokens)
-    else:
-        print_error(("incorrect expression syntax (third) ", third))
-        return
+    tokens.pop(0)
+    return result
 
-    if tokens[0].type == "CLO":
-        tokens.pop(0)
-    else:
-        print_error(("incorrect end", tokens[0]))
-        return
-
-    return Expression(left=left, right=right, operator=operator)
-
-"""| ?x <- | 5 !ADD 7 > >"""
 
 def parse_assignment(tokens):
     print('parsing an assignment')
@@ -115,6 +106,6 @@ def parse_assignment(tokens):
     if tokens[0].type == "CLO":
         tokens.pop(0)
     else:
-        print_error(("incorrect expression syntax (third) ", third))
+        print_error("incorrect assignment")
         return
     return Assignment(name, expression)
