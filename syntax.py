@@ -46,7 +46,7 @@ def parse_program(tokens):
         statement = parse_statement(tokens)
         if statement:
             program.statements.append(statement)
-            print('added statement: ', program.statements)
+            #print('added statement: ', program.statements)
         else:
             print_error(("no statement, tokens: ", tokens))
             return #should this be break???
@@ -58,7 +58,7 @@ def parse_statement(tokens):
         tokens.pop(0)
     else:
         print_error("(at parse_statement) statement doesnt start with | ")
-        pprint(tokens)
+        #pprint(tokens)
         return
     if len(tokens) > 2 and tokens[0].type == "VAR" and tokens[1].type == "ASS":
         return parse_assignment(tokens)
@@ -99,7 +99,7 @@ def parse_expression(tokens): #assume no nested for now
 
 
 def parse_assignment(tokens):
-    print('parsing an assignment')
+    #print('parsing an assignment')
     name = tokens.pop(0).value
     tokens.pop(0)
     expression = parse_statement(tokens)

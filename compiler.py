@@ -6,12 +6,23 @@ script = "| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >"
 
 #script = "| 2 !MUL | 5 !ADD 7 > >"
 
-tokens = lexical.tokenize(script)
 
-program = syntax.parse_program(tokens)
+def compile(script):
 
-#evaluator.evaluate_statement(program.statements[0])
+    tokens = lexical.tokenize(script)
 
-#print(evaluator.evaluate_statement(program.statements[0]))
+    program = syntax.parse_program(tokens)
 
-evaluator.evaluate_program(program)
+    program, variables = evaluator.evaluate_program(program)
+
+    output = []
+
+    for statement in program.statements:
+        if isinstance(statement, syntax.Assignment):
+            output.append(variables[statement.name])
+        elif isinstance(statement, syntax.Expression):
+            output.append(statement.value)
+
+    return output
+
+print(compile(script))
