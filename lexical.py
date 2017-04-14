@@ -1,7 +1,4 @@
-"""
-This part sends a token at a time to the next stage
-(for now it just splits into a string)
-"""
+
 import re
 from collections import namedtuple
 
@@ -11,13 +8,9 @@ Token = namedtuple('Token', 'value type')
 
 def tokenize(script):
     tokens = script.split(" ")
-    tokenlist = []
     for token in tokens:
         token_type = process_token(token)
-        #yield Token(token, token_type)
-        tokenobject = Token(token, token_type)
-        tokenlist.append(tokenobject)
-    return tokenlist
+        yield Token(token, token_type)
 
 
 def process_token(token): #move to lexer (token should be a dict or tuple with token and type)

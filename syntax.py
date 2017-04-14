@@ -25,7 +25,7 @@ class Expression():
         self.right = right
         self.operator = operator
         self.value = value
-        self.expression = True #this must not be necessary
+        self.expression = True
 
 
 class Assignment():
@@ -42,19 +42,17 @@ def print_error(message):
 def parse_program(tokens):
     program = Program()
     while tokens:
-        #if tokens[0].type == "OPE":
         statement = parse_statement(tokens)
         if statement:
             program.statements.append(statement)
-            #print('added statement: ', program.statements)
         else:
             print_error(("no statement, tokens: ", tokens))
-            return #should this be break???
+            return
     return program
 
 
 def parse_statement(tokens):
-    if tokens[0].type == "OPE": ###shouldnt be here incase assign an int
+    if tokens[0].type == "OPE":
         tokens.pop(0)
     else:
         print_error("(at parse_statement) statement doesnt start with | ")
@@ -80,11 +78,10 @@ def parse_expression_side(tokens):
         print_error("at parse_expression_side")
 
 
-def parse_expression(tokens): #assume no nested for now
+def parse_expression(tokens):
     left = parse_expression_side(tokens)
-
     next_token = tokens.pop(0)
-    if next_token.type == "CLO": #- it is a one token expression OR double brackets
+    if next_token.type == "CLO":
         value = left
         result = Expression(value=value)
     elif next_token.type == "OPP":
@@ -93,13 +90,11 @@ def parse_expression(tokens): #assume no nested for now
         result = Expression(left=left, right=right, operator=operator)
     else:
         print_error("at parse-expression")
-
     tokens.pop(0)
     return result
 
 
 def parse_assignment(tokens):
-    #print('parsing an assignment')
     name = tokens.pop(0).value
     tokens.pop(0)
     expression = parse_statement(tokens)
@@ -109,3 +104,4 @@ def parse_assignment(tokens):
         print_error("incorrect assignment")
         return
     return Assignment(name, expression)
+    

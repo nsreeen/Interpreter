@@ -1,15 +1,10 @@
 import lexical, syntax, evaluator
 
-#script = "| | 2 !ADD | 3 !ADD 1 > > !SUB | 5 !ADD 7 > >"
-
-script = "| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >"
-
-#script = "| 2 !MUL | 5 !ADD 7 > >"
-
-
 def compile(script):
 
     tokens = lexical.tokenize(script)
+
+    tokens = list(tokens)
 
     program = syntax.parse_program(tokens)
 
@@ -25,4 +20,5 @@ def compile(script):
 
     return output
 
-print(compile(script))
+if __name__ == "__main__":
+    print(compile(script))
