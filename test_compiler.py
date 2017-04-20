@@ -2,7 +2,7 @@ import compiler
 
 class TestStatementOutput:
     def test_addition(self):
-        assert compiler.compile("| 5 !ADD 7 >") == [12]
+        assert compiler.compile("| 5 !ADD 7 >", {}) == [12, {}]
 
     def test_subtraction(self):
         assert compiler.compile("| 5 !SUB 7 >") == [-2]

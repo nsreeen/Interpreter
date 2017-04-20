@@ -1,11 +1,9 @@
-terminals:
+TERMINALS:
 
 !ADD
 !SUB
 !MUL
-
 ->
-
 integers [0-9]+
 names ?[^ ]+
 |
@@ -13,20 +11,23 @@ names ?[^ ]+
 
 
 
-Rules:
-- Expressions that can be surrounded by | and >
+
+RULES:
+
+- Expressions must be surrounded by | and >
 
 
-non terminals (should have own func in parser and most have own class):
 
-PROGRAM := STMT +
 
-STMT := EXPR
-        ASSIGNMENT
+NON-TERMINALS:
 
-EXPR := | EXPR operator EXPR >
-        INTEGER
-        NAME
+PROGRAM := STATEMENT +
 
-ASSIGNMENT :=
-        NAME <- EXPR
+STATEMENT := EXPRESSION
+             ASSIGNMENT
+
+EXPRESSION := | EXPRESSION operator EXPRESSION >
+     	      | INTEGER >
+    	      | NAME >
+
+ASSIGNMENT := | NAME <- EXPRESSION >
