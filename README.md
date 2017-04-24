@@ -22,7 +22,13 @@ Operators are:
 ## Examples:
 '''
 | 5 !MUL 7 >
+'''
+'''
 | | 2 !ADD | 3 !ADD 1 > > !SUB | 5 !ADD 7 > >
+'''
+'''
 | ?x <- | 1 > >
+'''
+'''
 | ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >
 '''
