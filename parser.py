@@ -13,8 +13,6 @@ EXPR := | EXPR operator EXPR >
 ASSIGNMENT :=
         NAME <- EXPR"""
 
-from pprint import pprint
-
 class Program():
     def __init__(self):
         self.statements = []
@@ -47,7 +45,7 @@ def parse_program(tokens, dictionary):
         if statement:
             program.statements.append(statement)
         else:
-            print_error(("No statement found.  The next token is: ", tokens[0]))
+            #print_error(("No statement found.  The next token is: ", tokens[0]))
             return
     return program
 
@@ -106,13 +104,7 @@ def parse_expression(tokens, dictionary):
         right = parse_expression_side(tokens, dictionary)
         #print("\n in parse_expression, right is ", right, "tokens are ", tokens)
         result = Expression(left=left, right=right, operator=operator)
-        """next_token = tokens.pop(0)
-        if next_token.type == "CLO":
-            print("\n in parse_expression, right is ", right, "tokens are ", tokens)
-            result = Expression(left=left, right=right, operator=operator)
-        else:
-            print_error("Expression could not be parsed")
-            return"""
+
     else:
         print_error("Expression could not be parsed")
         return

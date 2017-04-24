@@ -1,4 +1,4 @@
-import syntax
+import parser
 
 
 def execute_calculation(left, right, op):

@@ -11,14 +11,6 @@ names ?[^ ]+
 
 
 
-
-RULES:
-
-- Expressions must be surrounded by | and >
-
-
-
-
 NON-TERMINALS:
 
 PROGRAM := STATEMENT +
@@ -31,3 +23,11 @@ EXPRESSION := | EXPRESSION operator EXPRESSION >
     	      | NAME >
 
 ASSIGNMENT := | NAME <- EXPRESSION >
+
+
+
+
+RULES:
+
+- Expressions and assignments must be surrounded by | and >
+

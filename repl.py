@@ -1,8 +1,10 @@
-import compiler, lexical, syntax, evaluator
+import interpreter, lexer, parser, evaluator
 
 
 def help_giver():
-    print("print help")
+    print('\n All expressions should be wrapped in open "|" and close ">".')
+    print(' All variable names should start with "?". \n To assign use "<-". \n Operators are: \n "!ADD" \n "!SUB" \n "!MUL"\n ')
+    print('Examples:\n "| 5 !MUL 7 >" \n "| | 2 !ADD | 3 !ADD 1 > > !SUB | 5 !ADD 7 > >" \n "| ?x <- | 1 > >" \n "| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >"\n')
 
 
 print("!!! Press q to quit, h for help")
@@ -13,35 +15,34 @@ dictionary = {}
 
 while running:
 
-    user_input = input(">> ")
+    try:
+        user_input = input(">> ")
 
-    #print("input got ")
+    except EOFError:
+        user_input = 'q'
 
     if user_input.lower() == "q":
-        #print("quiting")
         running = False
 
     elif user_input.lower() == "h":
-        print("get help")
         help_giver()
 
     elif user_input.lower() == "dictionary":
         print("dictionary")
         for k, v in dictionary.items():
-            print(k, " : ", v.value) #__dict__)
+            print(k, " : ", v.value)
 
     elif user_input in dictionary:
         print(dictionary[user_input].value)
 
     else:
+        try:
+            tree, dictionary = compiler.compile(user_input, dictionary)
 
-        tree, dictionary = compiler.compile(user_input, dictionary)
-
-        for statement in tree.statements:
-            #print("statement")
-            if isinstance(statement, syntax.Assignment):
-                #output.append((statement.name + " = " + str(variables[statement.name])))
-                pass
-            elif isinstance(statement, syntax.Expression):
-                #print("expression")
-                print(statement.value)
+            for statement in tree.statements:
+                if isinstance(statement, syntax.Assignment):
+                    pass
+                elif isinstance(statement, syntax.Expression):
+                    print(statement.value)
+        except:
+            print("\n Syntax error.  Type 'h' for help. \n")

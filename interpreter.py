@@ -1,4 +1,4 @@
-import lexical, syntax, evaluator
+import lexer, parser, evaluator
 
 #script = "| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 > | ?x !ADD 1 >"
 
