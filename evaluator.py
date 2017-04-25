@@ -11,9 +11,9 @@ def execute_calculation(left, right, op):
 
 
 def one_side_expression(statement, statement_side, side, dictionary):
-    if isinstance(statement_side, syntax.Expression) and statement_side.value != None:
+    if isinstance(statement_side, parser.Expression) and statement_side.value != None:
         side = statement_side.value
-    elif isinstance(statement_side, syntax.Expression) and statement_side.value == None:
+    elif isinstance(statement_side, parser.Expression) and statement_side.value == None:
         side = evaluate_expression(statement_side)
     else:
         side = statement_side
@@ -45,9 +45,9 @@ def evaluate_assignment(statement, dictionary): #, variables):
 
 
 def evaluate_statement(statement, dictionary):
-    if isinstance(statement, syntax.Expression):
+    if isinstance(statement, parser.Expression):
         return evaluate_expression(statement, dictionary)
-    elif isinstance(statement, syntax.Assignment):
+    elif isinstance(statement, parser.Assignment):
         return evaluate_assignment(statement, dictionary)
 
 

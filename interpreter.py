@@ -2,15 +2,15 @@ import lexer, parser, evaluator
 
 #script = "| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 > | ?x !ADD 1 >"
 
-def compile(script, dictionary):
+def interpret(script, dictionary):
 
     #print("compile running")
 
-    tokens = lexical.tokenize(script)
+    tokens = lexer.tokenize(script)
 
     tokens = list(tokens)
 
-    program = syntax.parse_program(tokens, dictionary)
+    program = parser.parse_program(tokens, dictionary)
 
     program, dictionary = evaluator.evaluate_program(program, dictionary)
 
@@ -32,4 +32,4 @@ def compile(script, dictionary):
     return program, dictionary
 
 if __name__ == "__main__":
-    compile(script)
+    interpret(script)

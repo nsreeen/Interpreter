@@ -28,7 +28,6 @@ while running:
         help_giver()
 
     elif user_input.lower() == "dictionary":
-        print("dictionary")
         for k, v in dictionary.items():
             print(k, " : ", v.value)
 
@@ -37,12 +36,12 @@ while running:
 
     else:
         try:
-            tree, dictionary = compiler.compile(user_input, dictionary)
+            tree, dictionary = interpreter.interpret(user_input, dictionary)
 
             for statement in tree.statements:
-                if isinstance(statement, syntax.Assignment):
+                if isinstance(statement, parser.Assignment):
                     pass
-                elif isinstance(statement, syntax.Expression):
+                elif isinstance(statement, parser.Expression):
                     print(statement.value)
         except:
             print("\n Syntax error.  Type 'h' for help. \n")
