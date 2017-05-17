@@ -18,7 +18,7 @@ while running:
     try:
         user_input = input(">> ")
 
-    except EOFError:
+    except EOFError: #script will terminate gracefully
         user_input = 'q'
 
     if user_input.lower() == "q":
@@ -35,7 +35,7 @@ while running:
         print(dictionary[user_input].value)
 
     else:
-        try:
+        try: # try stops the script terminating if there is a syntax error
             tree, dictionary = interpreter.interpret(user_input, dictionary)
 
             for statement in tree.statements:
