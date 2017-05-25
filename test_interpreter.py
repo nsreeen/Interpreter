@@ -14,25 +14,16 @@ class TestStatementInterpretation:
     def test_multiplication(self):
         assert interpret("| 2 !MUL 4 >", {})[0].statements[0].value == 8
 
-    #def test_nested_expression(self):
-    #    assert interpret("| | 2 !ADD | 3 !ADD 1 > > !SUB | 5 !ADD 7 > >", {})[0].statements[0].value ==  -6
-
-    #def test_multiple_expressions(self):
-    #    assert interpret("| 3 !MUL | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[0].value == 36
-    #    assert interpret("| 3 !MUL | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[0].value == 30
+    def test_multiple_expressions(self):
+        assert interpret("| 3 !MUL | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[0].value == 36
+        assert interpret("| 3 !MUL | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[1].value == 30
 
     def test_assignment(self):
-        pass #assert interpret("| ?x <- | 5 !ADD 7 > >", {})[1].statements[0].value == 12
+        assert interpret("| ?x <- | 5 !ADD 7 > >", {})[0].statements[0].value.value == 12
 
-    #def test_assignment_and_dictionary(self):
-    #    assert interpret("| ?x <- | 5 !ADD 7 > >", {})[1]["?x"] == 12
+    def test_assignment_and_dictionary(self):
+        assert interpret("| ?x <- | 5 !ADD 7 > >", {})[1]["?x"] == 12
 
-    #def test_multiple_assignment_expression(self):
-    #    assert interpret("| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[0].value == 12
-    #    assert interpret("| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[1].value == 30
-
-if __name__ == "__main__":
-    x = TestStatementInterpretation()
-    for test in TestStatementInterpretation.__dict__.values():
-        if callable(test):
-	           test(x)
+    def test_multiple_assignment_expression(self):
+        assert interpret("| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[0].value.value == 12
+        assert interpret("| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[1].value == 30
