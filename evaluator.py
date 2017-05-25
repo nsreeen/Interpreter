@@ -8,42 +8,90 @@ def execute_calculation(left, right, op):
     elif op == "!MUL":
         return left * right
 
-def one_side_expression(statement, statement_side, side, dictionary):
-    if isinstance(statement_side, parser.Expression) and statement_side.value != None:
-        side = statement_side.value
-    elif isinstance(statement_side, parser.Expression) and statement_side.value == None:
-        side = evaluate_expression(statement_side)
-    else:
-        side = statement_side
-    return side
 
-def evaluate_expression(statement, dictionary):
-    if statement.value != None and statement.value in dictionary:
-            statement.value = dictionary[statement_side].value
+def evaluate_expression(program, current, dictionary):
+
+    # If current already has a value, return
+    if current.value:
+        return program, current.value, dictionary
+
+    # If current only has a left attribute which is an int, that is the value, so return
+    elif current.left and isinstance(current.left, int) and current.right == None:
+        current.value = current.left
+        print(current.value)
+        return program, current.value, dictionary
+
+    # Extra steps needed to find the value
     else:
         left, right = None, None
-        left = one_side_expression(statement, statement.left, left, dictionary)
-        right = one_side_expression(statement, statement.right, right, dictionary)
-        statement.value = execute_calculation(left, right, statement.operator)
-    return statement, dictionary
 
-def evaluate_assignment(statement, dictionary):
+        # Add missing values (from dictionary, or nested Expression objects)
+        if current.left in dictionary:
+            current.left = dictionary[current.left]
+            left = current.left
+        if current.right in dictionary:
+            current.right = dictionary[current.right]
+            right = current.right
+        if isinstance(current.left, parser.Expression):
+            program, current.left.value, dictionary  = evaluate_expression(program, current.left, dictionary)
+            left = current.left.value
+        if isinstance(current.right, parser.Expression):
+            program, current.right.value, dictionary = evaluate_expression(program, current.right, dictionary)
+            right = current.right.value
+        if isinstance(current.left, int):
+            left = current.left
+        if isinstance(current.right, int):
+            right = current.right
+
+        # Find value
+        if current.left and current.right and current.value == None:
+            current.value = execute_calculation(left, right, current.operator)
+        elif isinstance(current.left, int):
+            current.value = current.left
+        else:
+            current.value = current.left.value
+
+        print(current.value)
+        return program, current.value, dictionary
+
+def evaluate_assignment(program, statement, dictionary):
+    # Assignment object has name and value attributes (value will be an Expression object)
     name = statement.name
     if statement.value.value != None:
-        value = statement.value
+        # value attribute is an Expression object that already has a value
+        # replace the Assignment objects value (Expression object) with this value (int)
+        value = statement.value.value
     else:
-        statement.value, dictionary = evaluate_expression(statement.value, dictionary)
-        value = statement.value
+        # value attribute is an Expression object does not have a value
+        program, value, dictionary = evaluate_expression(program, statement.value, dictionary)
+    # add variable to the dictionary
     dictionary[name] = value
     return statement, dictionary
 
-def evaluate_statement(statement, dictionary):
+def evaluate_statement(program, statement, dictionary):
     if isinstance(statement, parser.Expression):
-        return evaluate_expression(statement, dictionary)
+        program, statement.value, dictionary = evaluate_expression(program, statement, dictionary)
+        return statement, dictionary
     elif isinstance(statement, parser.Assignment):
-        return evaluate_assignment(statement, dictionary)
+        return evaluate_assignment(program, statement, dictionary)
 
 def evaluate_program(program, dictionary):
     for statement in program.statements:
-        statement, dictionary = evaluate_statement(statement, dictionary)
+        statement, dictionary = evaluate_statement(program, statement, dictionary)
+
     return program, dictionary
+
+"""def print_object(obj, space=0):
+    buf = space * 5 * '  '
+    if isinstance(obj, parser.Expression):
+        print('\n', buf, 'Expression object')
+        for each in (obj.left, obj.right, obj.operator, obj.value):
+            print(buf, each)
+            if isinstance(each, parser.Expression):
+                print_object(each, space+1)
+        print('\n')
+
+    elif isinstance(obj, parser.Assignment):
+        print('\n Assignment object')
+        print(obj.name, obj.value)
+        print('\n')"""
