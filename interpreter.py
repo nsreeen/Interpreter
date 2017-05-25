@@ -8,6 +8,8 @@ def interpret(script, dictionary):
 
     program = parser.parse_program(tokens, dictionary)
 
+    #import pdb; pdb.set_trace()
+
     program, dictionary = evaluator.evaluate_program(program, dictionary)
 
     return program, dictionary
