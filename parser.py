@@ -38,18 +38,22 @@ def parse_statement(tokens, dictionary):
 
 
 def parse_expression_side(tokens, dictionary):
-    first = tokens.pop(0)
-    if first.type == "OPE":
+    print('\n in parse_expression_side \n')
+
+    if tokens[0].type == "OPE":
         return parse_expression(tokens, dictionary)
 
-    elif first.type == "NUM":
+    elif tokens[0].type == "NUM":
+        first = tokens.pop(0)
         return int(first.value)
 
-    elif first.type == "VAR" and first.value in dictionary:
+    elif tokens[0].type == "VAR" and first.value in dictionary:
+        first = tokens.pop(0)
         val = dictionary[first.value]
         return int(val.value)
 
-    elif first.type == "VAR":
+    elif tokens[0].type == "VAR":
+        first = tokens.pop(0)
         return first.value
 
     else:
@@ -57,10 +61,11 @@ def parse_expression_side(tokens, dictionary):
 
 
 def parse_expression(tokens, dictionary):
+    print('\n in parse expression, first token is: ', tokens[0])
     if tokens[0].type == "OPE":
         tokens.pop(0)
     else:
-        print_error("Statement doesn't start with | ")
+        print("\n Statement doesn't start with | \n", tokens[0])
         return
     left = parse_expression_side(tokens, dictionary)
     if tokens[0].type == "CLO":
@@ -68,6 +73,7 @@ def parse_expression(tokens, dictionary):
         result = Expression(left=value, value=value)
     elif tokens[0].type == "OPP":
         operator = tokens.pop(0).value
+        print('\n', operator, tokens[0])
         right = parse_expression_side(tokens, dictionary)
         result = Expression(left=left, right=right, operator=operator)
     else:
@@ -76,7 +82,7 @@ def parse_expression(tokens, dictionary):
     if tokens[0].type == "CLO":
         tokens.pop(0)
     else:
-        print_error("Assignment syntax incorrect")
+        print("\n Assignment syntax incorrect \n", tokens[0])
         return
     return result
 
@@ -89,7 +95,7 @@ def parse_assignment(tokens, dictionary):
         return
     name = tokens.pop(0).value
     tokens.pop(0)
-    expression = parse_expression(tokens, dictionary) 
+    expression = parse_expression(tokens, dictionary)
     if tokens[0].type == "CLO":
         tokens.pop(0)
     else:

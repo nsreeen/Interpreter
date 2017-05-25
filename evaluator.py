@@ -12,10 +12,11 @@ def one_side_expression(statement, statement_side, side, dictionary):
     if isinstance(statement_side, parser.Expression) and statement_side.value != None:
         side = statement_side.value
     elif isinstance(statement_side, parser.Expression) and statement_side.value == None:
-        side = evaluate_expression(statement_side)
+        side, d = evaluate_expression(statement_side, dictionary)
+        print('\n\n\n::::: ', side.value)
     else:
         side = statement_side
-    return side
+    return side.value
 
 def evaluate_expression(statement, dictionary):
     if statement.value != None and statement.value in dictionary:
