@@ -1,6 +1,6 @@
 An interpreter for a made up calculator language, written in python. 
 
-To run the repl type "python3 repl.py" into your terminal.
+To run the repl type "python repl.py" into your terminal.
 
 
 
