@@ -4,5 +4,4 @@ python:
 install:
   - "pip install pytest"
 script:
-- flake8
 - test_interpreter.py
