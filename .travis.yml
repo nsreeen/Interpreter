@@ -4,4 +4,4 @@ python:
 install:
   - "pip install pytest"
 script:
-- pytest
+- "pytest"
