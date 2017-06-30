@@ -1,4 +1,4 @@
-An interpreter for a made up calculator language, written in python. 
+An interpreter for a made up calculator language, written for python 3. 
 
 To run the repl type "python repl.py" into your terminal.
 
