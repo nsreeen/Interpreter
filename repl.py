@@ -32,7 +32,7 @@ while running:
             print(k, " : ", v.value)
 
     elif user_input in dictionary:
-        print(dictionary[user_input].value)
+        print(dictionary[user_input])
 
     else:
         try: # try stops the script terminating if there is a syntax error
@@ -40,7 +40,7 @@ while running:
 
             for statement in tree.statements:
                 if isinstance(statement, parser.Assignment):
-                    pass
+                    pass # don't print assignment statements
                 elif isinstance(statement, parser.Expression):
                     print(statement.value)
         except:

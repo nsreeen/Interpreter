@@ -18,7 +18,6 @@ def evaluate_expression(program, current, dictionary):
     # If current only has a left attribute which is an int, that is the value, so return
     elif current.left and isinstance(current.left, int) and current.right == None:
         current.value = current.left
-        print(current.value)
         return program, current.value, dictionary
 
     # Extra steps needed to find the value
@@ -51,7 +50,6 @@ def evaluate_expression(program, current, dictionary):
         else:
             current.value = current.left.value
 
-        print(current.value)
         return program, current.value, dictionary
 
 def evaluate_assignment(program, statement, dictionary):
@@ -80,18 +78,3 @@ def evaluate_program(program, dictionary):
         statement, dictionary = evaluate_statement(program, statement, dictionary)
 
     return program, dictionary
-
-"""def print_object(obj, space=0):
-    buf = space * 5 * '  '
-    if isinstance(obj, parser.Expression):
-        print('\n', buf, 'Expression object')
-        for each in (obj.left, obj.right, obj.operator, obj.value):
-            print(buf, each)
-            if isinstance(each, parser.Expression):
-                print_object(each, space+1)
-        print('\n')
-
-    elif isinstance(obj, parser.Assignment):
-        print('\n Assignment object')
-        print(obj.name, obj.value)
-        print('\n')"""
