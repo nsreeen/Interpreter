@@ -41,7 +41,6 @@ def evaluate_expression(program, current, dictionary):
             left = current.left
         if isinstance(current.right, int):
             right = current.right
-
         # Find value
         if current.left and current.right and current.value == None:
             current.value = execute_calculation(left, right, current.operator)
@@ -49,7 +48,6 @@ def evaluate_expression(program, current, dictionary):
             current.value = current.left
         else:
             current.value = current.left.value
-
         return program, current.value, dictionary
 
 def evaluate_assignment(program, statement, dictionary):

@@ -46,11 +46,6 @@ def parse_expression_side(tokens, dictionary):
         first = tokens.pop(0)
         return Expression(left = int(first.value))
 
-    elif tokens[0].type == "VAR" and tokens[0].value in dictionary:
-        first = tokens.pop(0)
-        val = dictionary[first.value]
-        return Expression(left = int(val.value))
-
     elif tokens[0].type == "VAR":
         first = tokens.pop(0)
         return Expression(left = first.value)

@@ -29,12 +29,12 @@ while running:
 
     elif user_input.lower() == "dictionary":
         for k, v in dictionary.items():
-            print(k, " : ", v.value)
+            print(k, " : ", v)
 
     elif user_input in dictionary:
         print(dictionary[user_input])
 
-    else:
+    else: #interpret the statment
         try: # try stops the script terminating if there is a syntax error
             tree, dictionary = interpreter.interpret(user_input, dictionary)
 

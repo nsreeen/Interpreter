@@ -20,7 +20,6 @@ class TestStatementInterpretation:
 
     def test_assignment(self):
         assert interpret("| ?x <- | 5 !ADD 7 > >", {})[0].statements[0].value.value == 12
-        #assert interpret("| 3 !MUL | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[1].value == 30
 
     def test_assignment(self):
         assert interpret("| ?x <- | 5 !ADD 7 > >", {})[0].statements[0].value.value == 12
@@ -34,3 +33,6 @@ class TestStatementInterpretation:
     def test_multiple_assignment_expression(self):
         assert interpret("| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[0].value.value == 12
         assert interpret("| ?x <- | 5 !ADD 7 > > | 20 !ADD 10 >", {})[0].statements[1].value == 30
+
+    def test_assignment_and_use(self):
+        assert interpret("| ?x <- | 5 > > | ?x !ADD 5 >", {})[0].statements[1].value == 10
